@@ -1,24 +1,37 @@
 const { Events } = require("discord.js");
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
+const specialDomainHandlers = require("../utils/linkHandlers");
+const {
+  categories,
+  sanitizeUrl,
+  checkRateLimit,
+} = require("../utils/urlUtils");
 
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
     if (message.author.bot || !message.content.startsWith("!share")) return;
 
-    const args = message.content.slice(6).trim().split(" ");
-    const url = args[0];
+    // Check rate limit
+    if (!checkRateLimit(message.author.id)) {
+      return message.reply("Please wait 30 seconds between sharing links.");
+    }
 
-    if (!url) {
+    const args = message.content.slice(6).trim().split(" ");
+    const rawUrl = args[0];
+
+    if (!rawUrl) {
       return message.reply(
         "Please provide a URL to share. Usage: !share <url>",
       );
     }
 
     try {
-      // Validate URL
+      // Validate and sanitize URL
+      const url = sanitizeUrl(rawUrl);
       const urlObject = new URL(url);
+
       if (!urlObject.protocol.startsWith("http")) {
         return message.reply("Please provide a valid HTTP/HTTPS URL");
       }
@@ -43,13 +56,21 @@ module.exports = {
           $('meta[property="twitter:image"]').attr("content"),
         siteName:
           $('meta[property="og:site_name"]').attr("content") ||
-          new URL(url).hostname,
+          urlObject.hostname,
       };
+
+      // Check for special domain handlers
+      const domain = urlObject.hostname.replace("www.", "");
+      let specialEmbed = null;
+
+      if (specialDomainHandlers[domain]) {
+        specialEmbed = await specialDomainHandlers[domain](urlObject);
+      }
 
       // Create rich embed
       const linkEmbed = {
-        color: 0x0099ff,
-        title: metadata.title,
+        color: specialEmbed?.color || 0x0099ff,
+        title: specialEmbed?.title || metadata.title,
         url: url,
         author: {
           name: message.author.tag,
@@ -58,6 +79,11 @@ module.exports = {
         description: metadata.description,
         thumbnail: metadata.image ? { url: metadata.image } : null,
         fields: [
+          {
+            name: "Category",
+            value: categories[domain] || "🔗 Link",
+            inline: true,
+          },
           {
             name: "Source",
             value: metadata.siteName,
@@ -78,7 +104,7 @@ module.exports = {
       // Send the embed
       await message.channel.send({ embeds: [linkEmbed] });
 
-      // Delete the original command message for cleanliness
+      // Delete the original command message
       try {
         await message.delete();
       } catch (error) {
