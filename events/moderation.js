@@ -25,6 +25,12 @@ module.exports = {
       case "ban":
         await handleBan(message, args);
         break;
+      case "unban":
+        await handleUnban(message, args);
+        break;
+      case "banlist":
+        await handleBanList(message);
+        break;
       case "clear":
         await handleClear(message, args);
         break;
@@ -77,6 +83,77 @@ async function handleBan(message, args) {
   }
 }
 
+async function handleUnban(message, args) {
+  if (!args[0]) {
+    return message.reply("Please provide a user ID to unban");
+  }
+
+  const userId = args[0];
+  const reason = args.slice(1).join(" ") || "No reason provided";
+
+  try {
+    // First, fetch the ban entry to make sure the user is actually banned
+    const banInfo = await message.guild.bans.fetch(userId);
+    if (!banInfo) {
+      return message.reply("This user is not banned");
+    }
+
+    // Unban the user
+    await message.guild.members.unban(userId, reason);
+    message.channel.send(
+      `Successfully unbanned ${banInfo.user.tag} (ID: ${userId})\nReason: ${reason}`,
+    );
+
+    // Try to send a DM to the unbanned user
+    try {
+      const unbannedUser = await client.users.fetch(userId);
+      await unbannedUser.send(
+        `You have been unbanned from ${message.guild.name}\nReason: ${reason}`,
+      );
+    } catch (dmError) {
+      console.log("Could not DM the unbanned user");
+    }
+  } catch (error) {
+    if (error.code === 10026) {
+      // Unknown Ban error code
+      return message.reply("This user is not banned from this server.");
+    }
+    console.error("Error unbanning user:", error);
+    message.reply(
+      "Failed to unban the user. Make sure the ID is correct and I have the right permissions.",
+    );
+  }
+}
+
+async function handleBanList(message) {
+  try {
+    const bans = await message.guild.bans.fetch();
+    if (bans.size === 0) {
+      return message.reply("There are no banned users in this server.");
+    }
+
+    const banListEmbed = {
+      color: 0xff0000,
+      title: "Banned Users List",
+      description: "Here are all currently banned users:",
+      fields: bans.map((ban) => ({
+        name: `${ban.user.tag} (ID: ${ban.user.id})`,
+        value: `Reason: ${ban.reason || "No reason provided"}`,
+      })),
+      footer: {
+        text: `Total bans: ${bans.size}`,
+      },
+    };
+
+    message.channel.send({ embeds: [banListEmbed] });
+  } catch (error) {
+    console.error("Error fetching ban list:", error);
+    message.reply(
+      "Failed to fetch the ban list. Make sure I have the right permissions.",
+    );
+  }
+}
+
 async function handleClear(message, args) {
   const amount = parseInt(args[0]);
 
@@ -116,6 +193,10 @@ function showHelp(message) {
       {
         name: "!ban @user [reason]",
         value: "Bans the mentioned user from the server",
+      },
+      {
+        name: "!unban userID [reason]",
+        value: "Unbans a user using their ID",
       },
       {
         name: "!clear [number]",
