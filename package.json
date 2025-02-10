@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "discord.js": "^14.17.3"
+    "cheerio": "^1.0.0",
+    "discord.js": "^14.17.3",
+    "node-fetch": "^3.3.2"
   }
 }
