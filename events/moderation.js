@@ -210,6 +210,10 @@ function showHelp(message) {
         name: "!help",
         value: "Shows this help message",
       },
+      {
+        name: "!share <url>",
+        value: "Shares a link with rich preview in the current channel",
+      },
     ],
     footer: {
       text: "Moderator permissions required to use these commands",
