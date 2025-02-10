@@ -199,6 +199,10 @@ function showHelp(message) {
         value: "Unbans a user using their ID",
       },
       {
+        name: "!banlist",
+        value: "Shows a list of all banned users in the server",
+      },
+      {
         name: "!clear [number]",
         value: "Clears the specified number of messages (1-100)",
       },
