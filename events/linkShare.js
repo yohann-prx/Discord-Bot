@@ -1,43 +1,42 @@
 const { Events } = require("discord.js");
-const fetch = require("node-fetch");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args)); // Fixed fetch import
 const cheerio = require("cheerio");
-const specialDomainHandlers = require("../utils/linkHandlers");
-const {
-  categories,
-  sanitizeUrl,
-  checkRateLimit,
-} = require("../utils/urlUtils");
 
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
     if (message.author.bot || !message.content.startsWith("!share")) return;
 
-    // Check rate limit
-    if (!checkRateLimit(message.author.id)) {
-      return message.reply("Please wait 30 seconds between sharing links.");
-    }
-
     const args = message.content.slice(6).trim().split(" ");
-    const rawUrl = args[0];
+    const url = args[0];
 
-    if (!rawUrl) {
+    if (!url) {
       return message.reply(
         "Please provide a URL to share. Usage: !share <url>",
       );
     }
 
     try {
-      // Validate and sanitize URL
-      const url = sanitizeUrl(rawUrl);
-      const urlObject = new URL(url);
-
-      if (!urlObject.protocol.startsWith("http")) {
-        return message.reply("Please provide a valid HTTP/HTTPS URL");
+      // Basic URL validation
+      if (!url.match(/^https?:\/\//i)) {
+        return message.reply(
+          "Please provide a valid URL starting with http:// or https://",
+        );
       }
 
-      // Fetch webpage content
-      const response = await fetch(url);
+      // Fetch the webpage
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const html = await response.text();
       const $ = cheerio.load(html);
 
@@ -56,34 +55,25 @@ module.exports = {
           $('meta[property="twitter:image"]').attr("content"),
         siteName:
           $('meta[property="og:site_name"]').attr("content") ||
-          urlObject.hostname,
+          new URL(url).hostname,
       };
 
-      // Check for special domain handlers
-      const domain = urlObject.hostname.replace("www.", "");
-      let specialEmbed = null;
-
-      if (specialDomainHandlers[domain]) {
-        specialEmbed = await specialDomainHandlers[domain](urlObject);
+      // Trim long descriptions
+      if (metadata.description.length > 200) {
+        metadata.description = metadata.description.substring(0, 197) + "...";
       }
 
-      // Create rich embed
+      // Create embed
       const linkEmbed = {
-        color: specialEmbed?.color || 0x0099ff,
-        title: specialEmbed?.title || metadata.title,
+        color: 0x0099ff,
+        title: metadata.title.substring(0, 256), // Discord limit
         url: url,
         author: {
           name: message.author.tag,
           icon_url: message.author.displayAvatarURL(),
         },
         description: metadata.description,
-        thumbnail: metadata.image ? { url: metadata.image } : null,
         fields: [
-          {
-            name: "Category",
-            value: categories[domain] || "🔗 Link",
-            inline: true,
-          },
           {
             name: "Source",
             value: metadata.siteName,
@@ -96,22 +86,24 @@ module.exports = {
           },
         ],
         timestamp: new Date(),
-        footer: {
-          text: "🔗 Shared via LinkShare",
-        },
       };
+
+      // Add thumbnail if image exists and URL is valid
+      if (metadata.image && metadata.image.match(/^https?:\/\//i)) {
+        linkEmbed.thumbnail = { url: metadata.image };
+      }
 
       // Send the embed
       await message.channel.send({ embeds: [linkEmbed] });
 
-      // Delete the original command message
+      // Try to delete the original command message
       try {
         await message.delete();
-      } catch (error) {
-        console.error("Could not delete original message:", error);
+      } catch (err) {
+        console.log("Could not delete original message");
       }
     } catch (error) {
-      console.error("Error processing link:", error);
+      console.error("Error details:", error);
       message.reply(
         "Failed to process the link. Please make sure it's a valid URL and try again.",
       );
