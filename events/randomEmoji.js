@@ -10,7 +10,7 @@ module.exports = {
     if (!message.content.includes("!")) return;
 
     // Array of fun emojis
-    const emojis = ["🗿"];
+    const emojis = ["🗿", "🧏‍♂️", "💪", "🤴"];
 
     // Select random emoji
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
