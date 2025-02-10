@@ -21,3 +21,19 @@ const specialDomainHandlers = {
   },
   // Add more special domain handlers as needed
 };
+
+const categories = {
+  "youtube.com": "📺 Video",
+  "github.com": "💻 Code",
+  "medium.com": "📚 Article",
+  // Add more categories
+};
+
+fields: [
+  {
+    name: "Category",
+    value: categories[new URL(url).hostname] || "🔗 Link",
+    inline: true,
+  },
+  // ... other fields
+];
