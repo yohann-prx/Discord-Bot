@@ -7,7 +7,7 @@ module.exports = {
     if (message.author.bot) return false;
 
     // Check if message contains an exclamation mark
-    if (!message.content.includes("!")) return;
+    if (!message.content.includes("sigma")) return;
 
     // Array of fun emojis
     const emojis = ["🗿", "🧏‍♂️", "💪", "🤴"];
@@ -22,7 +22,7 @@ module.exports = {
 
     // Also send the emoji as a reply with a fun message
     message
-      .reply(`Sigma Boy ${randomEmoji}`)
+      .reply(`I am the Sigma ${randomEmoji}`)
       .catch((error) => console.error("Failed to send message:", error));
   },
 };
