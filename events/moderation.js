@@ -211,6 +211,10 @@ function showHelp(message) {
         value: "Shows this help message",
       },
       {
+        name: "!tictactoe-help",
+        value: "Shows help message for Tic Tac Toe game",
+      },
+      {
         name: "!share <url>",
         value: "Shares a link with rich preview in the current channel",
       },
