@@ -4,7 +4,7 @@ module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
     // Ignore bot messages and messages that don't start with the prefix
-    if (message.author.bot || !message.content.startsWith("/")) return;
+    if (message.author.bot || !message.content.startsWith("!")) return;
 
     // Check if user has admin or moderator permissions
     if (
