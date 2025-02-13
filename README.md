@@ -1,57 +1,69 @@
 # Sigma Boy Bot
-## Objectif
-Créer un bot Discord en groupe ainsi qu’une extension Chrome permettant le partage d’informations / veille
-## Fonctionnalités
-### Modération
-1. `!kick @user [reason]` - Kicks the mentioned user
-2. `!ban @user [reason]` - Bans the mentioned user
-3. `!clear [number]` - Clears specified number of messages
-4. `!help` - Shows available moderation commands
+## Objective
+Create a group Discord bot as well as a Chrome extension allowing information sharing / monitoring.
 
-**Features and safety measures:**
-- Only users with moderator permissions can use these commands
-- Reason logging for kicks and bans
-- Error handling for all commands
-- Message cleanup after bulk delete
-- Help command with embedded message
-- Permission checking
-- Input validation
+---
 
-**To use these commands:**
-1. The bot must have appropriate permissions in the server
-2. The user must have moderator permissions
-3. Commands must start with the prefix `!`
-
-**Example usage:**
+## Installation
+### Clone the repository
+```bash
+git clone https://github.com/yohann-prx/Discord-Bot.git
 ```
-!kick @user Breaking rules
-!ban @user Continuous harassment
-!clear 50
-!help
+### Install the dependencies
+If you don't have the correct dependencies installed. Move to the Bot folder and run this command.
+```bash
+npm install discord.js cheerio node-fetch
+```
+### Run the bot
+Add the bot in your Discord server and get the token.
+Move to the Bot folder and run this command.
+```bash
+node index.js
 ```
 
 ---
 
-## Contraintes du projet
+## Features
+### Help Command
+1. `!help` - Shows available commands
+### Moderation
+1. `!kick @user [reason]` - Kicks the mentioned user
+2. `!ban @user [reason]` - Bans the mentioned user
+3. `!unban @userID [reason]` - Unbans the mentioned user
+4. `!banlist` - Shows the list of banned users
+3. `!clear [number]` - Clears specified number of messages
+### Sending URL link
+1. `!share <url>` - Shares a link with rich preview in the current channel. Only works with Youtube, Github & Medium links.
+### Random Emojis response
+1. `!!!` in your comments - Responds with a sentence & a random emoji
+### The "Quoi" "Feur" joke
+1. `quoi` in your comments - Responds with "Feur !"
+### Tic Tac Toe Game
+1. `!tictactoe-help` - Shows available commands
+2. `!tictactoe` - Starts a game of Tic Tac Toe
+
+---
+
+## Project constraints
 ### NodeJS
-Créer une application
-Avoir des fonctionnalité pertinentes et un code maintenable / scalable
+Create an application
+Have relevant features and maintainable / scalable code
 ### BDD
-Gérer des données utilisateur, traiter des fonctions plus avancées (ex: Gamification, stats, etc)
-## Critères d'évaluation
+Manage user data, process more advanced functions (eg: Gamification, stats, etc.)
+## Evaluation criteria
 ### Interactions
-- Modulabilité Extension
-- Qualité de l’UX
-- Fonctionnalités Bot
-### Base de Données
-- Pertinence du stock
-- Impact de la BDD
-- Features bonus
+- Modulability Extension
+- UX quality
+- Bot features
+### Database
+- Relevance of the stock
+- Impact of the BDD
+- Bonus features
 ### API
-- Qualité du code
-- Propreté / scalabilité
-- Maintenabilité
+- Code quality
+- Cleanliness / scalability
+- Maintainability
 ### Git & Doc
-- Propreté du Git
-- Organisation
-- Qualité de la Doc
+- Git cleanliness
+- Organization
+- Quality of the Doc
