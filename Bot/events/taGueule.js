@@ -13,6 +13,6 @@ module.exports = {
     );
     if (!found) return;
 
-    message.reply("Feur");
+    message.reply("Feur !");
   },
 };
