@@ -31,7 +31,9 @@ for (const file of eventFiles) {
 }
 
 client.once(Events.ClientReady, (readyClient) => {
-  console.log("c pré loul, je suis log en tant que ${readyClient.user.tag}");
+  console.log(
+    "Le Sigma Boy est prêt à faire du sale ! ${readyClient.user.tag}",
+  );
 });
 
 client.login(token);
