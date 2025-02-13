@@ -3,6 +3,7 @@ const { Events } = require("discord.js");
 // Store active games
 const activeGames = new Map();
 
+// Tic Tac Toe game class
 class TicTacToeGame {
   constructor(player) {
     this.board = [
@@ -146,6 +147,7 @@ class TicTacToeGame {
   }
 }
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {

@@ -3,6 +3,7 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args)); // Fixed fetch import
 const cheerio = require("cheerio");
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
@@ -33,6 +34,7 @@ module.exports = {
         },
       });
 
+      // Check for HTTP errors
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

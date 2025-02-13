@@ -1,10 +1,12 @@
 const { Events } = require("discord.js");
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
     if (message.content !== "!tictactoe-help") return;
 
+    // Embed message to show help
     const helpEmbed = {
       color: 0x0099ff,
       title: "❓ Tic Tac Toe Help",

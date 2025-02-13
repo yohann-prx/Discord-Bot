@@ -1,5 +1,6 @@
 const { Events } = require("discord.js");
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   execute(message) {
@@ -7,7 +8,7 @@ module.exports = {
     if (message.author.bot) return false;
 
     // Check if message contains an exclamation mark
-    if (!message.content.includes("sigma")) return;
+    if (!message.content.includes("!!!")) return;
 
     // Array of fun emojis
     const emojis = ["🗿", "🧏‍♂️", "💪", "🤴"];

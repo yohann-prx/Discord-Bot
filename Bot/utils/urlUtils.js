@@ -4,6 +4,7 @@ const categories = {
   "medium.com": "📚 Article",
 };
 
+// Sanitize URL by removing UTM parameters
 function sanitizeUrl(url) {
   const cleanUrl = new URL(url);
   ["utm_source", "utm_medium", "utm_campaign"].forEach((param) => {
@@ -14,6 +15,7 @@ function sanitizeUrl(url) {
 
 const rateLimits = new Map();
 
+// Check rate limit for a user
 function checkRateLimit(userId) {
   const now = Date.now();
   const userLimit = rateLimits.get(userId);
@@ -26,6 +28,7 @@ function checkRateLimit(userId) {
   return true;
 }
 
+// Export the functions
 module.exports = {
   categories,
   sanitizeUrl,

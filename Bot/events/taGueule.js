@@ -1,5 +1,6 @@
 const { Events } = require("discord.js");
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   execute(message) {
