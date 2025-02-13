@@ -1,5 +1,6 @@
 const { Events, PermissionsBitField } = require("discord.js");
 
+// Event to handle the message creation
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
@@ -18,6 +19,7 @@ module.exports = {
     const args = message.content.slice(1).split(" ");
     const command = args.shift().toLowerCase();
 
+    // Handle moderation commands
     switch (command) {
       case "kick":
         await handleKick(message, args);
@@ -41,6 +43,7 @@ module.exports = {
   },
 };
 
+// Function to handle the kick command
 async function handleKick(message, args) {
   if (!args[0]) return message.reply("Please mention a user to kick");
 
@@ -62,6 +65,7 @@ async function handleKick(message, args) {
   }
 }
 
+// Function to handle the ban command
 async function handleBan(message, args) {
   if (!args[0]) return message.reply("Please mention a user to ban");
 
@@ -83,6 +87,7 @@ async function handleBan(message, args) {
   }
 }
 
+// Function to handle the unban command
 async function handleUnban(message, args) {
   if (!args[0]) {
     return message.reply("Please provide a user ID to unban");
@@ -125,6 +130,7 @@ async function handleUnban(message, args) {
   }
 }
 
+// Function to handle the banlist command
 async function handleBanList(message) {
   try {
     const bans = await message.guild.bans.fetch();
@@ -154,6 +160,7 @@ async function handleBanList(message) {
   }
 }
 
+// Function to handle the clear command
 async function handleClear(message, args) {
   const amount = parseInt(args[0]);
 
@@ -180,6 +187,7 @@ async function handleClear(message, args) {
   }
 }
 
+// Function to show the help message
 function showHelp(message) {
   const helpEmbed = {
     color: 0x0099ff,

@@ -20,6 +20,7 @@ const eventFiles = fs
   .readdirSync(eventsPath)
   .filter((file) => file.endsWith(".js"));
 
+// Load the events
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file);
   const event = require(filePath);
@@ -30,6 +31,7 @@ for (const file of eventFiles) {
   }
 }
 
+// Log the client in with the token
 client.once(Events.ClientReady, (readyClient) => {
   console.log(
     "Le Sigma Boy est prêt à faire du sale ! ${readyClient.user.tag}",
