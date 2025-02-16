@@ -54,6 +54,7 @@ node index.js
 1. `!veille` - Shows available commands
 2. `!veille random` - Shows a random saved link
 3. `!veille top` - Shows top contributors
+<img width="391" alt="image" src="https://github.com/user-attachments/assets/6af2b06e-e9b0-4802-84d8-be6be64ad630" />
 
 ---
 
