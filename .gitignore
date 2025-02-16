@@ -10,3 +10,6 @@ API/node_modules/
 API/config.json
 API/package.json
 API/package-lock.json
+Bot/config.json
+Bot/config.json
+*.json
