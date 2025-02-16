@@ -17,7 +17,7 @@ npm install discord.js cheerio node-fetch
 ### Run the API
 move to the API folder and run this command.
 ```bash
-node app.js
+node api.js
 ```
 ### Run the bot
 Add the bot in your Discord server and get the token.
