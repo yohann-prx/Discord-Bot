@@ -1,4 +1,5 @@
 const { Events, PermissionsBitField } = require("discord.js");
+const helpCommand = require("../commands/help.js");
 
 // Event to handle the message creation
 module.exports = {
@@ -37,7 +38,7 @@ module.exports = {
         await handleClear(message, args);
         break;
       case "help":
-        await showHelp(message);
+        helpCommand.execute(message);
         break;
     }
   },

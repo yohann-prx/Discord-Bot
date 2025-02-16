@@ -14,12 +14,21 @@ If you don't have the correct dependencies installed. Move to the Bot folder and
 ```bash
 npm install discord.js cheerio node-fetch
 ```
+### Run the API
+move to the API folder and run this command.
+```bash
+node api.js
+```
 ### Run the bot
 Add the bot in your Discord server and get the token.
 Move to the Bot folder and run this command.
 ```bash
 node index.js
 ```
+### Add the extension
+- Go to extensions manager of your browser.
+- Enable developer mode
+- Click on load unpacked and select the extension folder.
 
 ---
 
@@ -41,6 +50,11 @@ node index.js
 ### Tic Tac Toe Game
 1. `!tictactoe-help` - Shows available commands
 2. `!tictactoe` - Starts a game of Tic Tac Toe
+### Veille extension
+1. `!veille` - Shows available commands
+2. `!veille random` - Shows a random saved link
+3. `!veille top` - Shows top contributors
+<img width="391" alt="image" src="https://github.com/user-attachments/assets/6af2b06e-e9b0-4802-84d8-be6be64ad630" />
 
 ---
 
