@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Discord Veille Share</title>
+        <link rel="stylesheet" href="veille.css" />
+    </head>
+    <body>
+        <div id="Extension">
+            <h1>Share Link to Veille</h1>
+            <form id="linkForm">
+                <div class="input-group">
+                    <label for="linkInput">URL:</label>
+                    <input
+                        type="url"
+                        id="linkInput"
+                        placeholder="Page URL (auto-filled)"
+                        required
+                    />
+                </div>
+                <div class="input-group">
+                    <label for="descriptionInput">Description:</label>
+                    <textarea
+                        id="descriptionInput"
+                        placeholder="Enter a description for this link"
+                        required
+                    ></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="titleSelect">Select Existing Category:</label>
+                    <select id="titleSelect"></select>
+                </div>
+                <div class="input-group">
+                    <label for="newTitleInput">Or Create New Category:</label>
+                    <input
+                        type="text"
+                        id="newTitleInput"
+                        placeholder="Enter new category name"
+                    />
+                </div>
+                <button type="submit" class="btn-submit">Share Link</button>
+            </form>
+        </div>
+        <script src="veille.js"></script>
+    </body>
+</html>
