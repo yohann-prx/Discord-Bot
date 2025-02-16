@@ -1,0 +1,15 @@
+Bot/node_modules/
+Bot/config.json
+Bot/package.json
+Bot/package-lock.json
+Extensions/node_modules/
+Extensions/config.json
+Extensions/package.json
+Extensions/package-lock.json
+API/node_modules/
+API/config.json
+API/package.json
+API/package-lock.json
+Bot/config.json
+Bot/config.json
+*.json
